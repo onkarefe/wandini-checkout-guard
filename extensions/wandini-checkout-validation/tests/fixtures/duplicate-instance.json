@@ -1,0 +1,99 @@
+{
+  "payload": {
+    "export": "cart-validations-generate-run",
+    "target": "cart.validations.generate.run",
+    "input": {
+      "buyerJourney": {
+        "step": "CHECKOUT_COMPLETION"
+      },
+      "validation": {
+        "hmacSecret": {
+          "type": "single_line_text_field",
+          "value": "wandini-checkpoint-4a-fixture-secret-2026"
+        }
+      },
+      "cart": {
+        "lines": [
+          {
+            "quantity": 1,
+            "configuratorPayload": {
+              "value": "{\u0022width_cm\u0022:250,\u0022height_cm\u0022:240,\u0022crop\u0022:\u0022center\u0022}"
+            },
+            "configuratorInstanceId": {
+              "value": "550e8400-e29b-41d4-a716-446655440000"
+            },
+            "checkoutProof": {
+              "value": "v1.Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC85ODc2NTQzMjEw.NTUwZTg0MDAtZTI5Yi00MWQ0LWE3MTYtNDQ2NjU1NDQwMDAw.BTb2bqaIFs9d2ccyhaUL6uHMgLNc_cbfRp5YLT-XKtA.1.14445.EUR.kJItHGdvBL01EhxN-lTX7phPxF_2QGRKrRE6kzLsu18"
+            },
+            "cost": {
+              "amountPerQuantity": {
+                "amount": "144.45",
+                "currencyCode": "EUR"
+              }
+            },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/9876543210",
+              "printQuality": {
+                "type": "metaobject_reference",
+                "value": "gid://shopify/Metaobject/1234567890"
+              },
+              "product": {
+                "masterAssetId": {
+                  "type": "single_line_text_field",
+                  "value": "master-asset-123"
+                }
+              }
+            }
+          },
+          {
+            "quantity": 1,
+            "configuratorPayload": {
+              "value": "{\u0022width_cm\u0022:250,\u0022height_cm\u0022:240,\u0022crop\u0022:\u0022center\u0022}"
+            },
+            "configuratorInstanceId": {
+              "value": "550e8400-e29b-41d4-a716-446655440000"
+            },
+            "checkoutProof": {
+              "value": "v1.Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC85ODc2NTQzMjEw.NTUwZTg0MDAtZTI5Yi00MWQ0LWE3MTYtNDQ2NjU1NDQwMDAw.BTb2bqaIFs9d2ccyhaUL6uHMgLNc_cbfRp5YLT-XKtA.1.14445.EUR.kJItHGdvBL01EhxN-lTX7phPxF_2QGRKrRE6kzLsu18"
+            },
+            "cost": {
+              "amountPerQuantity": {
+                "amount": "144.45",
+                "currencyCode": "EUR"
+              }
+            },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/9876543210",
+              "printQuality": {
+                "type": "metaobject_reference",
+                "value": "gid://shopify/Metaobject/1234567890"
+              },
+              "product": {
+                "masterAssetId": {
+                  "type": "single_line_text_field",
+                  "value": "master-asset-123"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "validationAdd": {
+            "errors": [
+              {
+                "message": "This customized item could not be validated. Please return to your cart and try again.",
+                "target": "$.cart"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,47 @@
+query CartValidationsGenerateRunInput {
+  buyerJourney {
+    step
+  }
+  validation {
+    hmacSecret: metafield(key: "checkout_hmac_secret") {
+      type
+      value
+    }
+  }
+  cart {
+    lines {
+      quantity
+      configuratorPayload: attribute(key: "configurator_payload") {
+        value
+      }
+      configuratorInstanceId: attribute(key: "configurator_instance_id") {
+        value
+      }
+      checkoutProof: attribute(key: "_wandini_checkout_proof") {
+        value
+      }
+      cost {
+        amountPerQuantity {
+          amount
+          currencyCode
+        }
+      }
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          id
+          printQuality: metafield(namespace: "custom", key: "print_quality") {
+            type
+            value
+          }
+          product {
+            masterAssetId: metafield(namespace: "custom", key: "master_asset_id") {
+              type
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+}
