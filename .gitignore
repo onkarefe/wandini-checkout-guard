@@ -18,9 +18,15 @@ lerna-debug.log*
 # Environment variables
 .env
 .env.*
+!.env.example
 
 # Build
 dist
+build
+public/build
+.react-router
+prisma/dev.sqlite
+prisma/dev.sqlite-journal
 shared/types/graphql
 *.local
 

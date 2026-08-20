@@ -2,7 +2,7 @@
 
 client_id = "bd9874889ab9040033859ed88424cf48"
 name = "Wandini Checkout Guard"
-application_url = "https://shopify.dev/apps/default-app-home"
+application_url = "https://example.invalid/app"
 embedded = true
 
 [build]
@@ -12,8 +12,28 @@ automatically_update_urls_on_dev = true
 [webhooks]
 api_version = "2026-10"
 
+  [[webhooks.subscriptions]]
+  topics = [ "app/uninstalled" ]
+  uri = "/webhooks/app/uninstalled"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "/webhooks/app/scopes_update"
+
+  [[webhooks.subscriptions]]
+  compliance_topics = [ "customers/data_request" ]
+  uri = "/webhooks/compliance"
+
+  [[webhooks.subscriptions]]
+  compliance_topics = [ "customers/redact" ]
+  uri = "/webhooks/compliance"
+
+  [[webhooks.subscriptions]]
+  compliance_topics = [ "shop/redact" ]
+  uri = "/webhooks/compliance"
+
 [access_scopes]
 scopes = "read_products"
 
 [auth]
-redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]
+redirect_urls = [ "https://example.invalid/auth/callback" ]

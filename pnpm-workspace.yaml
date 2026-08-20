@@ -1,5 +1,0 @@
-packages:
-  - 'extensions/*'
-allowBuilds:
-  core-js: true
-  esbuild: true

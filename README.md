@@ -1,53 +1,61 @@
 # Wandini Checkout Guard
 
-Wandini Checkout Guard is a production-minimal Shopify extension-only app. It
-contains one Cart & Checkout Validation Function that prevents trusted configured
-wallpaper variants from proceeding through native checkout unless their exact
-variant, configuration payload, instance, quantity, unit price, and currency are
-authorized by a valid Wandini HMAC proof.
+Wandini Checkout Guard is a minimal developer-hosted Shopify app with one
+Shopify-hosted Cart & Checkout Validation Function.
 
-The only deployable extension is:
+## Architecture
 
-`extensions/wandini-checkout-validation`
+- The React Router web process provides Shopify authentication, installation,
+  embedded App Home, lifecycle/compliance webhooks, and persistent sessions.
+- Prisma with SQLite is the official scaffold's minimum session store.
+- **extensions/wandini-checkout-validation** is the only deployable Function. It
+  runs on Shopify infrastructure and does not call the web process at checkout.
+- The app requests only **read_products**. App Home makes no Admin API calls.
 
-The complete proof-v1 protocol, trusted merchandise classification, validation
-owner metafield contract, audit notes, and security limitations are documented
-in
-[checkout-proof-v1.md](extensions/wandini-checkout-validation/docs/checkout-proof-v1.md).
+The proof-v1 contract and validation behavior are documented in
+**extensions/wandini-checkout-validation/docs/checkout-proof-v1.md**.
 
-## Local verification
+## Local development and verification
 
-Install dependencies from the repository root when required:
-
-```shell
+~~~shell
 npm install
-```
+npm run setup
+npm run dev
+~~~
 
-Run Function checks from `extensions/wandini-checkout-validation`:
+The dev command uses Shopify CLI and can update the development app URLs. It
+requires an authenticated Shopify CLI session and is intentionally not run by
+this checkpoint.
 
-```shell
+~~~shell
 npm run typegen
-npm test -- --run
+npm test
+npm --workspace wandini-checkout-validation run build
+npm run typecheck
 npm run build
-```
+npm run build:shopify
+~~~
 
-Run the complete local app build from the repository root:
+## Hosting configuration still required
 
-```shell
-npm run build
-```
+Before production hosting:
 
-These commands generate types, execute unit and compiled-Wasm fixtures, and
-compile the JavaScript Function through Javy into
-`extensions/wandini-checkout-validation/dist/function.wasm`.
+1. Replace **https://example.invalid** in **shopify.app.toml** with the real
+   HTTPS host, keeping **/app** as the application path and
+   **/auth/callback** as the redirect path.
+2. Set **SHOPIFY_API_KEY**, **SHOPIFY_API_SECRET**, **SHOPIFY_APP_URL**,
+   **NODE_ENV=production**, and **PORT** on the host. No real secret belongs in
+   this repository.
+3. Run **npm run setup** during release and **npm run start** after
+   **npm run build**.
+4. Provide persistent storage for **prisma/dev.sqlite** and run one app
+   instance, or migrate Prisma to a production database before horizontal
+   scaling.
 
-## Secrets and Shopify activation
+## Manual Shopify work still pending
 
-No production HMAC secret belongs in this repository. Test secrets are fixtures
-only. The real secret must later be configured manually on the Shopify
-Validation owner in the app-reserved metafield described by the proof-v1
-contract, and separately in the authorized Wandini signer.
-
-Deployment, app installation, validation creation, secret configuration, and
-validation activation are manual Shopify-side steps. None are performed by the
-local commands above.
+After hosting is ready, manually sync/deploy the app configuration and Function,
+choose the intended Shopify distribution method, install the app, create and
+activate the Validation, and set the real app-owned Validation metafield
+**checkout_hmac_secret** plus the matching signer secret. None of those actions
+are performed by local builds.
