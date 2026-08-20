@@ -44,13 +44,23 @@ Before production hosting:
    HTTPS host, keeping **/app** as the application path and
    **/auth/callback** as the redirect path.
 2. Set **SHOPIFY_API_KEY**, **SHOPIFY_API_SECRET**, **SHOPIFY_APP_URL**,
-   **NODE_ENV=production**, and **PORT** on the host. No real secret belongs in
-   this repository.
-3. Run **npm run setup** during release and **npm run start** after
-   **npm run build**.
-4. Provide persistent storage for **prisma/dev.sqlite** and run one app
-   instance, or migrate Prisma to a production database before horizontal
-   scaling.
+   **NODE_ENV=production**, and **PORT** on the host. **SHOPIFY_APP_URL** must be
+   the public HTTPS origin without the **/app** path. These are the only runtime
+   environment variables used by this app shell; **SCOPES** and
+   **DATABASE_URL** are not read. No real secret belongs in this repository.
+3. Use a supported Node.js version from **package.json**. Install dependencies,
+   run **npm run setup**, run **npm run build**, then start the web process with
+   **npm run start**. The build produces **build/server/index.js** and the
+   matching static client assets under **build/client**.
+4. Mount persistent, writable storage at **prisma/** so
+   **prisma/dev.sqlite** survives releases and restarts. Run exactly one app
+   instance against this SQLite file. The current schema has a fixed SQLite URL,
+   so setting **DATABASE_URL** does not relocate it. Migrating to a shared
+   database is required before horizontal scaling.
+5. Expose the configured **PORT** through a public HTTPS endpoint. TLS may
+   terminate at the hosting platform's reverse proxy; the Node process can
+   receive proxied HTTP. Preserve the public host header and set
+   **SHOPIFY_APP_URL** to the externally visible HTTPS origin.
 
 ## Manual Shopify work still pending
 
